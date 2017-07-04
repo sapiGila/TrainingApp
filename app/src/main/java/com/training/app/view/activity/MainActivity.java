@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_intent_tutorial) {
             startActivity(new Intent(MainActivity.this, IntentTutorialActivity.class));
+        } else if (id == R.id.nav_mvp_tutorial) {
+            startActivity(new Intent(MainActivity.this, CalculatorActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

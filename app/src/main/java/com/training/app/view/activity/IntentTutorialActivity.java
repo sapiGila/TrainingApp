@@ -13,13 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.training.app.BuildConfig;
 import com.training.app.R;
 import com.training.app.helper.BitmapResizer;
 import com.training.app.helper.Toaster;
-import com.training.app.model.Contact;
+import com.training.app.object.Contact;
 
 import org.parceler.Parcels;
 

@@ -1,4 +1,4 @@
-package com.training.app.model;
+package com.training.app.object;
 
 import org.parceler.Parcel;
 

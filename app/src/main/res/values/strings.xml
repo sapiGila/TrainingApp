@@ -11,4 +11,5 @@
     <string name="save_image_failed">Could not save image.</string>
     <string name="save_image_succeeded">Image saved to device</string>
     <string name="image_mime_type">image/*</string>
+    <string name="action_calculate">Calculate</string>
 </resources>
