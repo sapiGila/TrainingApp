@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">TrainingApp</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -10,4 +10,5 @@
     <string name="action_settings">Settings</string>
     <string name="save_image_failed">Could not save image.</string>
     <string name="save_image_succeeded">Image saved to device</string>
+    <string name="image_mime_type">image/*</string>
 </resources>
