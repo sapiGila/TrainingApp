@@ -7,6 +7,10 @@
             android:title="Android: Intents Tutorial" />
 
         <item
+            android:id="@+id/nav_activity"
+            android:title="Android: Introduction to Android Activities Tutorial " />
+
+        <item
             android:id="@+id/nav_mvp_tutorial"
             android:title="Android: MVP Pattern" />
     </group>

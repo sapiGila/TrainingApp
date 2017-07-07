@@ -3,7 +3,9 @@
     package="com.training.app">
 
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -39,6 +41,21 @@
 
         <activity
             android:name=".view.activity.CalculatorActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activity.LifeCycleActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activity.LifeCycleAddTaskActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activity.BooActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 

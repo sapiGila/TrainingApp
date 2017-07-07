@@ -2,6 +2,7 @@ package com.training.app.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -85,6 +86,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_intent_tutorial) {
             startActivity(new Intent(MainActivity.this, IntentTutorialActivity.class));
+        } else if (id == R.id.nav_activity) {
+            startActivity(new Intent(MainActivity.this, LifeCycleActivity.class));
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(MainActivity.this, BooActivity.class));
+                }
+            }, 5000);
+
         } else if (id == R.id.nav_mvp_tutorial) {
             startActivity(new Intent(MainActivity.this, CalculatorActivity.class));
         }
