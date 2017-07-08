@@ -36,7 +36,7 @@ public class SnappyDB {
         }
     }
 
-    public void setSms(String task) {
+    public void setMessage(String task) {
         try {
             snappyDB.put(keyTask, task);
         } catch (SnappydbException e) {
@@ -44,7 +44,7 @@ public class SnappyDB {
         }
     }
 
-    public String getSms() {
+    public String getMessage() {
         String task = "";
         try {
             task = snappyDB.get(keyTask);

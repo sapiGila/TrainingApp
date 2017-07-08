@@ -1,8 +1,6 @@
 package com.training.app.view.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -16,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -46,7 +46,8 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
     private final int ADD_TASK_REQUEST = 1;
     private SnappyDB snappy;
     private SmsVerificationReceiver smsVerificationReceiver;
-    private String sms = "";
+    private String message = "";
+    private String task = "";
     private static final int REQUEST_PERMISSIONS = 20;
 
     @Override
@@ -67,9 +68,9 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "The onStart() event");
-        showDialogue();
-        sms = snappy.getSms();
-        resultTextView.setText(resultTextView.getText().toString() + "\n" + snappy.getSms());
+        message = snappy.getMessage() + "\n" + task;
+        resultTextView.setText(resultTextView.getText().toString() + "\n" + message);
+        task = "";
     }
 
     @Override
@@ -84,8 +85,10 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "The onPause() event");
+        resultTextView.setText("");
         if (smsVerificationReceiver != null) {
             unregisterReceiver(smsVerificationReceiver);
+            smsVerificationReceiver = null;
         }
     }
 
@@ -93,7 +96,7 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "The onStop() event");
-        snappy.setSms(sms);
+        snappy.setMessage(message);
     }
 
     @Override
@@ -113,23 +116,10 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String task = data.getStringExtra(LifeCycleAddTaskActivity.EXTRA_TASK_DESCRIPTION);
-                resultTextView.setText(resultTextView.getText().toString() + "\n" + task);
+                task = data.getStringExtra(LifeCycleAddTaskActivity.EXTRA_TASK_DESCRIPTION);
+                task = task + " : " + getCurrentTimeStamp();
             }
         }
-    }
-
-    private void showDialogue() {
-        AlertDialog alertDialog = new AlertDialog.Builder(LifeCycleActivity.this).create();
-        alertDialog.setTitle("Welcome");
-        alertDialog.setCancelable(false);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
     }
 
     private static String getCurrentTimeStamp() {
@@ -141,9 +131,10 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
 
     @Override
     public void setText(String text) {
-        sms = sms + "\n" + text;
+        text = text + " : " + getCurrentTimeStamp();
+        message = message + "\n" + text;
         resultTextView.setText(resultTextView.getText().toString() + "\n"
-                + text + " : " + getCurrentTimeStamp());
+                + text);
     }
 
     @Override
@@ -200,8 +191,28 @@ public class LifeCycleActivity extends AppCompatActivity implements LifeCycleCon
                         REQUEST_PERMISSIONS);
             }
         } else {
-            smsVerificationReceiver = new SmsVerificationReceiver(this);
-            registerReceiver(smsVerificationReceiver, new IntentFilter(smsVerificationReceiver.SMS_RECEIVED_INTENT));
+            if (smsVerificationReceiver == null) {
+                smsVerificationReceiver = new SmsVerificationReceiver(this);
+                registerReceiver(smsVerificationReceiver, new IntentFilter(smsVerificationReceiver.SMS_RECEIVED_INTENT));
+            }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_clear) {
+            message = "";
+            snappy.setMessage(message);
+            resultTextView.setText(message);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
