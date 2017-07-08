@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, IntentTutorialActivity.class));
         } else if (id == R.id.nav_activity) {
             startActivity(new Intent(MainActivity.this, LifeCycleActivity.class));
+        } else if (id == R.id.nav_fragment) {
+            startActivity(new Intent(MainActivity.this, TutorialFragmentActivity.class));
         } else if (id == R.id.nav_mvp_tutorial) {
             startActivity(new Intent(MainActivity.this, CalculatorActivity.class));
         }
