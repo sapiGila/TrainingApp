@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, TutorialFragmentActivity.class));
         } else if (id == R.id.nav_mvp_tutorial) {
             startActivity(new Intent(MainActivity.this, CalculatorActivity.class));
+        } else if (id == R.id.nav_workshop_api) {
+            startActivity(new Intent(MainActivity.this, PhoneBookActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
