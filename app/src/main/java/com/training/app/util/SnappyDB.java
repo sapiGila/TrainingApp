@@ -3,7 +3,6 @@ package com.training.app.util;
 import android.content.Context;
 
 import com.snappydb.DB;
-import com.snappydb.DBFactory;
 import com.snappydb.SnappydbException;
 
 /**
@@ -11,13 +10,9 @@ import com.snappydb.SnappydbException;
  */
 public class SnappyDB {
 
-    private Context mContext;
     private DB snappyDB;
-    private String keyTask = "KEY_TASK";
 
     public SnappyDB(Context context) {
-        mContext = context;
-
         try {
             snappyDB = new com.snappydb.SnappyDB.Builder(context)
                     .directory(context.getFilesDir().getAbsolutePath()) //optional
@@ -38,7 +33,7 @@ public class SnappyDB {
 
     public void setMessage(String task) {
         try {
-            snappyDB.put(keyTask, task);
+            snappyDB.put(VariableUtil.keyTask, task);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
@@ -47,7 +42,7 @@ public class SnappyDB {
     public String getMessage() {
         String task = "";
         try {
-            task = snappyDB.get(keyTask);
+            task = snappyDB.get(VariableUtil.keyTask);
         } catch (SnappydbException e) {
             e.printStackTrace();
         }

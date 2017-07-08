@@ -28,6 +28,7 @@ import com.training.app.dummy.Ipsum;
 public class ArticleFragment extends Fragment {
     public final static String ARG_POSITION = "position";
     int mCurrentPosition = -1;
+    TextView article;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,9 +40,11 @@ public class ArticleFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
         }
+        View rootView = inflater.inflate(R.layout.article_view, container, false);
+        article = rootView.findViewById(R.id.article);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.article_view, container, false);
+        return rootView;
     }
 
     @Override
@@ -63,7 +66,6 @@ public class ArticleFragment extends Fragment {
     }
 
     public void updateArticleView(int position) {
-        TextView article = getActivity().findViewById(R.id.article);
         article.setText(Ipsum.Articles[position]);
         mCurrentPosition = position;
     }

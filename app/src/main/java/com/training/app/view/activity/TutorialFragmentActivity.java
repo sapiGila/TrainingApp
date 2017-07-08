@@ -51,7 +51,7 @@ public class TutorialFragmentActivity extends FragmentActivity implements Headli
 
         // Capture the article fragment from the activity layout
         ArticleFragment articleFrag = (ArticleFragment)
-                getSupportFragmentManager().findFragmentById(R.id.article);
+                getSupportFragmentManager().findFragmentById(R.id.article_fragment);
 
         if (articleFrag != null) {
             // If article frag is available, we're in two-pane layout...
