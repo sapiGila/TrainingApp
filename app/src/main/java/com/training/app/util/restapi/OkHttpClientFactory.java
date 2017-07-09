@@ -22,6 +22,7 @@ public class OkHttpClientFactory {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.connectTimeout(TIMEOUT_CONNECTION_SECONDS, TimeUnit.SECONDS);
         httpClient.readTimeout(TIMEOUT_CONNECTION_SECONDS, TimeUnit.SECONDS);
+        httpClient.writeTimeout(TIMEOUT_CONNECTION_SECONDS, TimeUnit.SECONDS);
         httpClient.connectionPool(new ConnectionPool(MAX_REST_API_IDLE_CONNECTION, KEEP_ALIVE_IDLE_DURATION_MS,
                 TimeUnit.SECONDS));
         return httpClient;

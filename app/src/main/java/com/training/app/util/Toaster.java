@@ -29,7 +29,7 @@
  *
  */
 
-package com.training.app.helper;
+package com.training.app.util;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
@@ -37,8 +37,11 @@ import android.widget.Toast;
 
 public class Toaster {
 
-  public static void show(Context context, @StringRes int message) {
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-  }
-  
+    public static void show(Context context, @StringRes int message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void show(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
 }

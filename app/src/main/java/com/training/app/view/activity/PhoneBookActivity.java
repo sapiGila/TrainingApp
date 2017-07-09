@@ -11,10 +11,14 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.training.app.R;
-import com.training.app.dummy.DummyPhoneBook;
+import com.training.app.contract.PhoneBookContract;
 import com.training.app.object.PhoneBook;
+import com.training.app.presenter.PhoneBookPresenter;
+import com.training.app.util.Toaster;
 import com.training.app.view.adapter.PhoneBookAdapter;
 
 import org.parceler.Parcels;
@@ -25,19 +29,24 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Dell on 7/8/2017.
  */
 
-public class PhoneBookActivity extends AppCompatActivity {
+public class PhoneBookActivity extends AppCompatActivity implements PhoneBookContract.PhoneBookView {
 
     @BindView(R.id.recycler_view_phone_book)
     RecyclerView recyclerViewPhoneBook;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     private List<PhoneBook> phoneBooks = new ArrayList<>();
     private PhoneBookAdapter adapter;
+    private PhoneBookContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,11 +54,22 @@ public class PhoneBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_phone_book);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        phoneBooks = DummyPhoneBook.getPhoneBooks();
         adapter = new PhoneBookAdapter(PhoneBookActivity.this);
         recyclerViewPhoneBook.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewPhoneBook.setAdapter(adapter);
-        adapter.updatePhoneBooks(phoneBooks);
+        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        doBeforeProcessing();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initPersons();
     }
 
     @Override
@@ -87,5 +107,26 @@ public class PhoneBookActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PersonActivity.class);
         intent.putExtra("person", Parcels.wrap(phoneBook));
         startActivity(intent);
+    }
+
+    @Override
+    public void doBeforeProcessing() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void doShowPerson(List<PhoneBook> phoneBooks) {
+        adapter.updatePhoneBooks(phoneBooks);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void doOnError(String message) {
+        progressBar.setVisibility(View.GONE);
+        Toaster.show(this, message);
+    }
+
+    private void initPersons() {
+        presenter.getPersons();
     }
 }

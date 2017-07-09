@@ -37,12 +37,17 @@ public class PhoneBook {
     public PhoneBook() {
     }
 
+
     public PhoneBook(String name, String address, String phone, String email, String picture) {
+        this(name, address, phone, email);
+        this.picture = picture;
+    }
+
+    public PhoneBook(String name, String address, String phone, String email) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
-        this.picture = picture;
     }
 
     public String getId() {

@@ -29,7 +29,7 @@
  *
  */
 
-package com.training.app.helper;
+package com.training.app.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

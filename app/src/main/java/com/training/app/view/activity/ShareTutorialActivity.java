@@ -20,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.training.app.R;
-import com.training.app.helper.BitmapResizer;
-import com.training.app.helper.Toaster;
+import com.training.app.util.BitmapResizer;
+import com.training.app.util.Toaster;
 import com.training.app.object.Contact;
 
 import org.parceler.Parcels;
@@ -31,10 +31,11 @@ import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.training.app.helper.VariableUtils.BITMAP_HEIGHT;
-import static com.training.app.helper.VariableUtils.BITMAP_WIDTH;
-import static com.training.app.helper.VariableUtils.CONTACT_PERSON;
-import static com.training.app.helper.VariableUtils.IMAGE_URI_KEY;
+import static com.training.app.util.VariableUtil.BITMAP_HEIGHT;
+import static com.training.app.util.VariableUtil.BITMAP_WIDTH;
+import static com.training.app.util.VariableUtil.CONTACT_PERSON;
+import static com.training.app.util.VariableUtil.IMAGE_URI_KEY;
+
 
 /**
  * Created by Dell on 7/4/2017.
