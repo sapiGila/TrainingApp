@@ -119,14 +119,34 @@ public class PersonActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.capture_image, R.id.save_button})
+    @OnClick({R.id.capture_image, R.id.save_button, R.id.go_to_address, R.id.go_to_email})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.capture_image:
                 takePictureWithCamera();
                 break;
+            case R.id.go_to_address:
+                showAddress(editAddress.getText().toString());
+                break;
+            case R.id.go_to_email:
+                showEmail(editEmail.getText().toString());
+                break;
             case R.id.save_button:
                 break;
         }
+    }
+
+    private void showAddress(String address) {
+        address = address.replace(" ", "+");
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + address);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+
+    private void showEmail(String email) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", email, null));
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 }
