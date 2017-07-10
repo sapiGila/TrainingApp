@@ -14,6 +14,7 @@ import com.training.app.enumeration.Operator;
 import com.training.app.object.Calculator;
 import com.training.app.presenter.CalculatorPresenter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -61,8 +62,8 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorC
     }
 
     @Override
-    public void updateDisplay(double value) {
-        resultValue.setText(Double.toString(value));
+    public void updateDisplay(BigDecimal value) {
+        resultValue.setText(String.valueOf(value));
     }
 
     @OnClick(R.id.calculate_button)

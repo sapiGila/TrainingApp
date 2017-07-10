@@ -1,14 +1,16 @@
 package com.training.app.model;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Dell on 7/4/2017.
  */
 
 public interface CalculatorModel {
 
-    double add(double op1, double op2);
-    double mult(double op1, double op2);
-    double div(double op1, double op2);
-    double sub(double op1, double op2);
+    BigDecimal add(BigDecimal op1, BigDecimal op2);
+    BigDecimal mult(BigDecimal op1, BigDecimal op2);
+    BigDecimal div(BigDecimal op1, BigDecimal op2);
+    BigDecimal sub(BigDecimal op1, BigDecimal op2);
 
 }
