@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,6 @@ import org.parceler.Parcels;
 
 import java.io.File;
 
-import static android.support.v4.content.FileProvider.getUriForFile;
 import static com.training.app.util.VariableUtil.BITMAP_HEIGHT;
 import static com.training.app.util.VariableUtil.BITMAP_WIDTH;
 import static com.training.app.util.VariableUtil.CONTACT_PERSON;
@@ -80,7 +80,7 @@ public class IntentTutorialActivity extends AppCompatActivity {
         } else {
             newFile.getParentFile().mkdirs();
         }
-        selectedPhotoPath = getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", newFile);
+        selectedPhotoPath = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", newFile);
 
         // set extra intent
         captureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, selectedPhotoPath);
