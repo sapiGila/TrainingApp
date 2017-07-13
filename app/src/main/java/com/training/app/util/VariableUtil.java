@@ -8,7 +8,7 @@ public class VariableUtil {
 
     public static String keyTask = "KEY_TASK";
     public static String sharePreferences = "SHARED_PREFERENCE_TRAINING_APP";
-    public static String url = "http://dev.nostratech.com:2313/";
+    public static String url = "http://104.131.113.221:8888/";
     public static final boolean IS_DEBUG_MODE = true;
     public static final String IMAGE_URI_KEY = "IMAGE_URI";
     public static final String BITMAP_WIDTH = "BITMAP_WIDTH";
