@@ -5,19 +5,28 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
+
 /**
  * Created by Dell on 7/8/2017.
  */
 
+@RealmClass
 @Parcel(Parcel.Serialization.BEAN)
-public class PhoneBook {
+public class PhoneBook extends RealmObject {
 
+    @PrimaryKey
+    @SerializedName("uid")
+    @Expose
+    private int uid;
     @SerializedName("id")
     @Expose
     private String id;
     @SerializedName("version")
     @Expose
-    private Integer version;
+    private Integer version = 1;
     @SerializedName("name")
     @Expose
     private String name;
@@ -106,4 +115,22 @@ public class PhoneBook {
         this.picture = picture;
     }
 
+    public Number generateId(Number number) {
+        long id = (number != null) ? number.intValue() + 1 : 0;
+        return id;
+    }
+
+    public int generateVersion() {
+        int id = 0;
+        id = getVersion() + 1;
+        return id;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 }

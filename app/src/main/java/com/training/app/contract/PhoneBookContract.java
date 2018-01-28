@@ -17,18 +17,20 @@ public interface PhoneBookContract {
         void addPerson(PhoneBook phoneBook);
         void editPerson(PhoneBook phoneBook);
         void deletePerson(String personId);
+        void setPerson(PhoneBook phoneBook, boolean isEdit);
+        void onDestroy();
     }
 
     interface PhoneBookView {
         void doBeforeProcessing();
         void doShowPerson(List<PhoneBook> phoneBooks);
         void doOnError(String message);
+        void doAfterProcessing();
     }
 
     interface PersonView {
         void doBeforeProcessing();
         void doAfterUploadPhotoPerson(String imageUrl);
-        void doSetPhoneBook(PhoneBook phoneBook);
         void doAfterProcessing();
         void doOnError(String message);
     }

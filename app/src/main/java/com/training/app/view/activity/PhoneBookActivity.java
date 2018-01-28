@@ -18,6 +18,7 @@ import com.training.app.R;
 import com.training.app.contract.PhoneBookContract;
 import com.training.app.object.PhoneBook;
 import com.training.app.presenter.PhoneBookPresenter;
+import com.training.app.util.RealmDB;
 import com.training.app.util.Toaster;
 import com.training.app.view.adapter.PhoneBookAdapter;
 
@@ -57,13 +58,15 @@ public class PhoneBookActivity extends AppCompatActivity implements PhoneBookCon
         adapter = new PhoneBookAdapter(PhoneBookActivity.this);
         recyclerViewPhoneBook.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewPhoneBook.setAdapter(adapter);
-        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread());
+//        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         doBeforeProcessing();
+        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread()
+                , new RealmDB());
     }
 
     @Override
@@ -105,7 +108,7 @@ public class PhoneBookActivity extends AppCompatActivity implements PhoneBookCon
 
     public void startPersonActivity(PhoneBook phoneBook) {
         Intent intent = new Intent(this, PersonActivity.class);
-        intent.putExtra("person", Parcels.wrap(phoneBook));
+        intent.putExtra("person", Parcels.wrap(PhoneBook.class, phoneBook));
         startActivity(intent);
     }
 
@@ -116,8 +119,13 @@ public class PhoneBookActivity extends AppCompatActivity implements PhoneBookCon
 
     @Override
     public void doShowPerson(List<PhoneBook> phoneBooks) {
-        adapter.updatePhoneBooks(phoneBooks);
         progressBar.setVisibility(View.GONE);
+        if (phoneBooks.size() > 0) {
+            adapter.updatePhoneBooks(phoneBooks);
+        } else {
+            adapter.clearPhoneBooks();
+            Toaster.show(this, "Kosong");
+        }
     }
 
     @Override
@@ -126,7 +134,18 @@ public class PhoneBookActivity extends AppCompatActivity implements PhoneBookCon
         Toaster.show(this, message);
     }
 
+    @Override
+    public void doAfterProcessing() {
+        progressBar.setVisibility(View.GONE);
+    }
+
     private void initPersons() {
         presenter.getPersons();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 }

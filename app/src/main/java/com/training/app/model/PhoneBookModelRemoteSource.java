@@ -12,7 +12,7 @@ import retrofit2.Call;
  * Created by Dell on 7/9/2017.
  */
 
-public interface PhoneBookModel {
+public interface PhoneBookModelRemoteSource {
 
     Call<ResultList> getPhoneBooks();
     Call<Result> addPerson(PhoneBook phoneBook);

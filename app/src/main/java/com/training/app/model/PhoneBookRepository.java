@@ -16,7 +16,7 @@ import retrofit2.Call;
  * Created by Dell on 7/9/2017.
  */
 
-public class PhoneBookRepository implements PhoneBookModel {
+public class PhoneBookRepository implements PhoneBookModelRemoteSource {
 
     private PhoneBookRestApi restApi;
 

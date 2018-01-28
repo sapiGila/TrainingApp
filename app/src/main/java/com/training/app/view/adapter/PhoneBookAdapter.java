@@ -129,4 +129,10 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.phoneBooks.addAll(phoneBooks);
         notifyDataSetChanged();
     }
+
+    public void clearPhoneBooks() {
+        this.phoneBookList = new ArrayList<>();
+        this.phoneBooks = new ArrayList<>();
+        notifyDataSetChanged();
+    }
 }

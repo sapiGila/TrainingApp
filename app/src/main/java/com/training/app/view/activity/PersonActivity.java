@@ -31,9 +31,11 @@ import com.training.app.contract.PhoneBookContract;
 import com.training.app.object.PhoneBook;
 import com.training.app.presenter.PhoneBookPresenter;
 import com.training.app.util.BitmapResizer;
+import com.training.app.util.RealmDB;
 import com.training.app.util.Toaster;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -103,7 +105,9 @@ public class PersonActivity extends AppCompatActivity implements PhoneBookContra
             deleteButton.setVisibility(View.GONE);
             isEdit = false;
         }
-        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread());
+//        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread());
+        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread(),
+                new RealmDB());
     }
 
     private void takePictureWithCamera() {
@@ -185,30 +189,49 @@ public class PersonActivity extends AppCompatActivity implements PhoneBookContra
                     isUpload = false;
                 }
                 if (isUpload) {
-                    File fileCompressed = null;
-                    try {
-                        fileCompressed = new Compressor(this)
-                                .setQuality(75)
-                                .compressToFile(newFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    File fileCompressed = getFileCompressed();
                     if (fileCompressed != null) {
+
+                        //remote
                         presenter.uploadPhotoPerson(fileCompressed);
+
+                        //local
+//                        person.setPicture(fileCompressed.getAbsolutePath());
+//                        presenter.setPerson(person, isEdit);
                     }
                 } else {
-                    person.setPicture(FilenameUtils.getName(person.getPicture()));
+
+                    //remote
+                    if (StringUtils.isNotBlank(person.getPicture())) {
+                        person.setPicture(FilenameUtils.getName(person.getPicture()));
+                    }
                     if (isEdit) {
                         presenter.editPerson(person);
                     } else {
                         presenter.addPerson(person);
                     }
+
+                    //local
+//                    presenter.setPerson(person, isEdit);
                 }
                 break;
             case R.id.delete_button:
-                presenter.deletePerson(person.getId());
+                presenter.deletePerson(String.valueOf(person.getId()));
                 break;
         }
+    }
+
+    @Nullable
+    private File getFileCompressed() {
+        File fileCompressed = null;
+        try {
+            fileCompressed = new Compressor(this)
+                    .setQuality(75)
+                    .compressToFile(newFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileCompressed;
     }
 
     private void showAddress(String address) {
@@ -318,17 +341,6 @@ public class PersonActivity extends AppCompatActivity implements PhoneBookContra
     }
 
     @Override
-    public void doSetPhoneBook(PhoneBook phoneBook) {
-        progressBar.setVisibility(View.GONE);
-        saveButton.setVisibility(View.VISIBLE);
-        if (isEdit) {
-            deleteButton.setVisibility(View.VISIBLE);
-        } else {
-            deleteButton.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public void doAfterProcessing() {
         progressBar.setVisibility(View.GONE);
         saveButton.setVisibility(View.VISIBLE);
@@ -350,5 +362,11 @@ public class PersonActivity extends AppCompatActivity implements PhoneBookContra
             deleteButton.setVisibility(View.GONE);
         }
         Toaster.show(this, message);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 }
