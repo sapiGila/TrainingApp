@@ -16,6 +16,9 @@ import android.widget.ProgressBar;
 
 import com.training.app.R;
 import com.training.app.contract.PhoneBookContract;
+import com.training.app.datasource.PhoneBookRestApiAdapter;
+import com.training.app.model.PhoneBookRealmRepository;
+import com.training.app.model.PhoneBookRepository;
 import com.training.app.object.PhoneBook;
 import com.training.app.presenter.PhoneBookPresenter;
 import com.training.app.util.RealmDB;
@@ -65,8 +68,9 @@ public class PhoneBookActivity extends AppCompatActivity implements PhoneBookCon
     protected void onStart() {
         super.onStart();
         doBeforeProcessing();
-        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread()
-                , new RealmDB());
+        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread(),
+                new RealmDB(), new PhoneBookRepository(PhoneBookRestApiAdapter.getPhoneBookRestApi()),
+                new PhoneBookRealmRepository());
     }
 
     @Override

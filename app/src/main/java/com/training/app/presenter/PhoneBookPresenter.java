@@ -5,12 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.training.app.contract.PhoneBookContract;
-import com.training.app.datasource.PhoneBookRestApi;
-import com.training.app.datasource.PhoneBookRestApiAdapter;
 import com.training.app.model.PhoneBookModelLocalSource;
 import com.training.app.model.PhoneBookModelRemoteSource;
 import com.training.app.model.PhoneBookRealmRepository;
-import com.training.app.model.PhoneBookRepository;
 import com.training.app.object.PhoneBook;
 import com.training.app.object.Result;
 import com.training.app.object.ResultList;
@@ -45,38 +42,37 @@ public class PhoneBookPresenter implements PhoneBookContract.Presenter {
     private RealmDB realmDB;
 
     public PhoneBookPresenter(PhoneBookContract.PhoneBookView phoneBookView, Scheduler io, Scheduler mainThread,
-                              RealmDB realmDB) {
-        this(phoneBookView, io, mainThread);
+                              RealmDB realmDB, PhoneBookModelRemoteSource modelRemote, PhoneBookModelLocalSource modelLocal) {
+        this(phoneBookView, io, mainThread, modelRemote);
         this.realmDB = realmDB;
-        this.modelLocal = new PhoneBookRealmRepository();
+        this.modelLocal = modelLocal;
     }
 
-    public PhoneBookPresenter(PhoneBookContract.PhoneBookView phoneBookView, Scheduler io, Scheduler mainThread) {
-        this(io, mainThread);
+    public PhoneBookPresenter(PhoneBookContract.PhoneBookView phoneBookView, Scheduler io, Scheduler mainThread,
+                              PhoneBookModelRemoteSource modelRemote) {
+        this(io, mainThread, modelRemote);
         this.phoneBookView = phoneBookView;
     }
 
     public PhoneBookPresenter(PhoneBookContract.PersonView personView, Scheduler io, Scheduler mainThread,
-                              RealmDB realmDB) {
-        this(personView, io, mainThread);
+                              RealmDB realmDB, PhoneBookModelRemoteSource modelRemote) {
+        this(personView, io, mainThread, modelRemote);
         this.realmDB = realmDB;
         this.modelLocal = new PhoneBookRealmRepository();
     }
 
-    public PhoneBookPresenter(PhoneBookContract.PersonView personView, Scheduler io, Scheduler mainThread) {
-        this(io, mainThread);
+    public PhoneBookPresenter(PhoneBookContract.PersonView personView, Scheduler io, Scheduler mainThread,
+                              PhoneBookModelRemoteSource modelRemote) {
+        this(io, mainThread, modelRemote);
         this.personView = personView;
     }
 
-    public PhoneBookPresenter(Scheduler io, Scheduler mainThread) {
+    public PhoneBookPresenter(Scheduler io, Scheduler mainThread,
+                              PhoneBookModelRemoteSource modelRemote) {
         this.io = io;
         this.mainThread = mainThread;
-        this.modelRemote = new PhoneBookRepository(getPhoneBookRestApi());
+        this.modelRemote = modelRemote;
         this.gson = new Gson();
-    }
-
-    private PhoneBookRestApi getPhoneBookRestApi() {
-        return PhoneBookRestApiAdapter.getPhoneBookRestApi();
     }
 
     @Override

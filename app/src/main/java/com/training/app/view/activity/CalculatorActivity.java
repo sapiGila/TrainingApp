@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.training.app.R;
 import com.training.app.contract.CalculatorContract;
 import com.training.app.enumeration.Operator;
+import com.training.app.model.CalculatorRepository;
 import com.training.app.object.Calculator;
 import com.training.app.presenter.CalculatorPresenter;
 
@@ -44,7 +45,7 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorC
         setContentView(R.layout.activity_calculator);
         ButterKnife.bind(this);
         initSpinner();
-        presenter = new CalculatorPresenter(this);
+        presenter = new CalculatorPresenter(this, new CalculatorRepository());
     }
 
     private void initSpinner() {

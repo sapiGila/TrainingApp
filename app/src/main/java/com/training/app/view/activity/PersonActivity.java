@@ -28,6 +28,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.training.app.BuildConfig;
 import com.training.app.R;
 import com.training.app.contract.PhoneBookContract;
+import com.training.app.datasource.PhoneBookRestApiAdapter;
+import com.training.app.model.PhoneBookRepository;
 import com.training.app.object.PhoneBook;
 import com.training.app.presenter.PhoneBookPresenter;
 import com.training.app.util.BitmapResizer;
@@ -107,7 +109,7 @@ public class PersonActivity extends AppCompatActivity implements PhoneBookContra
         }
 //        presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread());
         presenter = new PhoneBookPresenter(this, Schedulers.io(), AndroidSchedulers.mainThread(),
-                new RealmDB());
+                new RealmDB(), new PhoneBookRepository(PhoneBookRestApiAdapter.getPhoneBookRestApi()));
     }
 
     private void takePictureWithCamera() {

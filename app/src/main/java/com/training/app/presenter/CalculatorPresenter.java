@@ -18,9 +18,10 @@ public class CalculatorPresenter implements CalculatorContract.Presenter {
     private CalculatorContract.View view;
     private CalculatorModel model;
 
-    public CalculatorPresenter(CalculatorContract.View view) {
+    public CalculatorPresenter(CalculatorContract.View view,
+                               CalculatorModel model) {
         this.view = view;
-        model = new CalculatorRepository();
+        this.model = model;
     }
 
     @Override

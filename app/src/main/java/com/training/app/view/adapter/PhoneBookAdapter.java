@@ -39,8 +39,7 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.adapter_phone_book, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, view);
         }
 
-        public void loadBind(int position) {
+        void loadBind(int position) {
             final PhoneBook phoneBook = phoneBooks.get(position);
             personName.setText(phoneBook.getName());
             personPhoneNumber.setText(phoneBook.getPhone());
@@ -112,7 +111,13 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                phoneBooksFiltered = (ArrayList<PhoneBook>) filterResults.values;
+                phoneBooksFiltered = new ArrayList<>();
+                List<?> result = (List<?>) filterResults.values;
+                for (Object object : result) {
+                    if (object instanceof PhoneBook) {
+                        phoneBooksFiltered.add((PhoneBook) object); // <-- add to temp
+                    }
+                }
                 refreshPhoneBook(phoneBooksFiltered);
             }
         };
@@ -124,7 +129,7 @@ public class PhoneBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         refreshPhoneBook(this.phoneBookList);
     }
 
-    public void refreshPhoneBook(List<PhoneBook> phoneBooks) {
+    private void refreshPhoneBook(List<PhoneBook> phoneBooks) {
         this.phoneBooks = new ArrayList<>();
         this.phoneBooks.addAll(phoneBooks);
         notifyDataSetChanged();
